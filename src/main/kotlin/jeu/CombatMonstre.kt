@@ -70,7 +70,7 @@ class CombatMonstre(
             var action = readln().toInt()
 
             while (action !in 1..3) {
-                println("Action invalide. Choisissez 1 pour attaque, 2 pour objet, 3 pour changement :")
+                println("Action invalide. Choisissez 1 pour attaque, 2 pour objet ou 3 pour changement :")
                 action = readln().toInt()
             }
             if (action == 1) {
@@ -86,4 +86,20 @@ class CombatMonstre(
 
         }
     }
+
+    fun afficheCombat() {
+        println("======== Début Round : $round ========")
+        println("Niveau : ${monstreSauvage.niveau}")
+        println("PV : ${monstreSauvage.pv} / ${monstreSauvage.pvMax}")
+        println(monstreSauvage.espece.afficheArt(true))
+        println(monstreJoueur.espece.afficheArt(false))
+        println("Niveau : ${monstreJoueur.niveau}")
+        println("PV : ${monstreJoueur.pv} / ${monstreJoueur.pvMax}")
+    }
+
+    fun jouer() {
+
+    }
+
+
 }

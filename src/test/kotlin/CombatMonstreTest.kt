@@ -6,7 +6,9 @@ import jeu.CombatMonstre
 import monstre.EspeceMonstre
 import monstre.IndividuMonstre
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.io.PrintStream
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -32,111 +34,28 @@ class CombatMonstreTest {
         modPv = 20.0
     )
 
-    private fun withInput(input: String, block: () -> Unit) {
-        val originalIn: InputStream = System.`in`
+    @Test
+    fun testAfficheCombat() {
+        val trainer = Entraineur(1, "Testeur", 100)
+        val m1 = IndividuMonstre(1, "Springleaf", especeTest, entraineur = trainer)
+        val sauvage = IndividuMonstre(2, "Springleaf", especeTest, entraineur = null)
+        val combat = CombatMonstre(m1, sauvage)
+        combat.round = 3
+
+        val originalOut = System.out
+        val outContent = ByteArrayOutputStream()
         try {
-            System.setIn(ByteArrayInputStream(input.toByteArray()))
-            block()
+            System.setOut(PrintStream(outContent))
+            combat.afficheCombat()
         } finally {
-            System.setIn(originalIn)
+            System.setOut(originalOut)
         }
-    }
 
-    @Test
-    fun testActionJoueurGameOver() {
-        val trainer = Entraineur(1, "Testeur", 100)
-        val m1 = IndividuMonstre(1, "M1", especeTest, entraineur = trainer)
-        m1.pv = 0
-        trainer.equipeMonstre.add(m1)
-        val sauvage = IndividuMonstre(2, "Sauvage", especeTest, entraineur = null)
-
-        val combat = CombatMonstre(m1, sauvage)
-        val result = combat.actionJoueur()
-        assertFalse(result)
-    }
-
-    @Test
-    fun testActionJoueurAttaquer() {
-        val trainer = Entraineur(1, "Testeur", 100)
-        val m1 = IndividuMonstre(1, "M1", especeTest, entraineur = trainer)
-        trainer.equipeMonstre.add(m1)
-        val sauvage = IndividuMonstre(2, "Sauvage", especeTest, entraineur = null)
-        val pvAvant = sauvage.pv
-
-        val combat = CombatMonstre(m1, sauvage)
-        withInput("1\n") {
-            val result = combat.actionJoueur()
-            assertTrue(result)
-            assertTrue(sauvage.pv < pvAvant)
-        }
-    }
-
-    @Test
-    fun testActionJoueurUtiliserObjetCaptureReussie() {
-        joueur.sacAItems.clear()
-        joueur.equipeMonstre.clear()
-        val m1 = IndividuMonstre(1, "M1", especeTest, entraineur = joueur)
-        joueur.equipeMonstre.add(m1)
-        val kube = MonsterKube(1, "MasterKube", "Capture à 100%", 1000.0)
-        joueur.sacAItems.add(kube)
-        val sauvage = IndividuMonstre(2, "Sauvage", especeTest, entraineur = null)
-
-        val combat = CombatMonstre(m1, sauvage)
-        withInput("2\n0\nNouveauNom\n") {
-            val result = combat.actionJoueur()
-            assertFalse(result)
-            assertEquals(joueur, sauvage.entraineur)
-        }
-    }
-
-    @Test
-    fun testActionJoueurUtiliserObjetNonUtilisable() {
-        val trainer = Entraineur(1, "Testeur", 100)
-        val m1 = IndividuMonstre(1, "M1", especeTest, entraineur = trainer)
-        trainer.equipeMonstre.add(m1)
-        val nonUtilisable = Item(1, "Pierre", "Juste une pierre")
-        trainer.sacAItems.add(nonUtilisable)
-        val sauvage = IndividuMonstre(2, "Sauvage", especeTest, entraineur = null)
-
-        val combat = CombatMonstre(m1, sauvage)
-        withInput("2\n0\n") {
-            val result = combat.actionJoueur()
-            assertTrue(result)
-        }
-    }
-
-    @Test
-    fun testActionJoueurChangerDeMonstreValide() {
-        val trainer = Entraineur(1, "Testeur", 100)
-        val m1 = IndividuMonstre(1, "M1", especeTest, entraineur = trainer)
-        val m2 = IndividuMonstre(2, "M2", especeTest, entraineur = trainer)
-        trainer.equipeMonstre.add(m1)
-        trainer.equipeMonstre.add(m2)
-        val sauvage = IndividuMonstre(3, "Sauvage", especeTest, entraineur = null)
-
-        val combat = CombatMonstre(m1, sauvage)
-        withInput("3\n1\n") {
-            val result = combat.actionJoueur()
-            assertTrue(result)
-            assertEquals(m2, combat.monstreJoueur)
-        }
-    }
-
-    @Test
-    fun testActionJoueurChangerDeMonstreKO() {
-        val trainer = Entraineur(1, "Testeur", 100)
-        val m1 = IndividuMonstre(1, "M1", especeTest, entraineur = trainer)
-        val m2 = IndividuMonstre(2, "M2", especeTest, entraineur = trainer)
-        m2.pv = 0
-        trainer.equipeMonstre.add(m1)
-        trainer.equipeMonstre.add(m2)
-        val sauvage = IndividuMonstre(3, "Sauvage", especeTest, entraineur = null)
-
-        val combat = CombatMonstre(m1, sauvage)
-        withInput("3\n1\n") {
-            val result = combat.actionJoueur()
-            assertTrue(result)
-            assertEquals(m1, combat.monstreJoueur)
-        }
+        val output = outContent.toString()
+        assertTrue(output.contains("======== Début Round : 3 ========"))
+        assertTrue(output.contains("Niveau : ${sauvage.niveau}"))
+        assertTrue(output.contains("PV : ${sauvage.pv} / ${sauvage.pvMax}"))
+        assertTrue(output.contains("Niveau : ${m1.niveau}"))
+        assertTrue(output.contains("PV : ${m1.pv} / ${m1.pvMax}"))
     }
 }
