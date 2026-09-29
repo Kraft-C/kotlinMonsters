@@ -5,6 +5,13 @@ import item.MonsterKube
 import monde.Zone
 import monstre.EspeceMonstre
 import monstre.IndividuMonstre
+import jeu.Partie
+
+
+
+var joueur = Entraineur(1, "Sacha",100)
+var rival = Entraineur(2, "Red", 500)
+
 
 
 val especeSpringleaf = EspeceMonstre(
@@ -163,19 +170,56 @@ val monsterKube = MonsterKube(
     chanceCapture = 50.0
 )
 
+/**
+ * Crée une nouvelle partie après avoir demandé son nom au joueur.
+ *
+ * Affiche un message d'introduction, met à jour le nom de l'entraîneur, puis crée une partie
+ * qui commence dans la première zone, `route1`.
+ *
+ * @return La nouvelle partie créée.
+ */
+fun nouvellePartie(): Partie {
+    println("Bienvenue dans Kotlin Monsters !")
+    println("Quel est votre nom ?")
+    joueur.nom = readlnOrNull() ?: joueur.nom
+
+    return Partie(
+        id = 1,
+        joueur = joueur,
+        zone = route1
+    )
+}
+
+
+
+/**
+ * Point d'entrée du programme.
+ *
+ * Prépare un badge et un monstre de démonstration, puis tente d'utiliser un Monster Kube sur
+ * ce monstre.
+ */
 fun main() {
 
 
+    fun main() {
+        route1.zoneSuivante = route2
+        route2.zonePrecedente = route1
+        joueur.sacAItems.add(monsterKube)
 
 
-    val badge = Badge(1, "Badge Roche", "badge gagné lorsque le joueur bat Pierre")
+        val partie = nouvellePartie()
+        partie.choixStarter()
+        partie.jouer()
+    }
 
 
-    val monstre1 = IndividuMonstre(1, "springleaf", especeSpringleaf, null, 1500.0)
+    //val badge = Badge(1, "Badge Roche", "badge gagné lorsque le joueur bat Pierre")
+
+    //val monstre1 = IndividuMonstre(1, "springleaf", especeSpringleaf, null, 1500.0)
     //val monstre2 = IndividuMonstre(2, "flamkip", especeFlamkip,  null, 1500.0)
     //val monstre3 = IndividuMonstre(3, "aquamy", especeAquamy, null, 1500.0)
 
-    monsterKube.utiliser(monstre1)
+    //monsterKube.utiliser(monstre1)
 }
 
 

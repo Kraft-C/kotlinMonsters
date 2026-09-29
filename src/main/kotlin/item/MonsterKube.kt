@@ -10,6 +10,16 @@ class MonsterKube(
     description: String,
     var chanceCapture: Double,
 ) : Item(id, nom, description), Utilisable {
+    /**
+     * Tente de capturer le monstre ciblé avec ce Monster Kube.
+     *
+     * La chance de capture dépend des PV restants de la cible. En cas de réussite, le joueur
+     * peut la renommer, puis elle est ajoutée à l'équipe ou à la boîte si l'équipe est pleine.
+     * Un monstre déjà entraîné ne peut pas être capturé.
+     *
+     * @param cible Le monstre sauvage visé par le Monster Kube.
+     * @return `true` si la capture réussit, sinon `false`.
+     */
     override fun utiliser(cible: IndividuMonstre): Boolean {
         println("Vous lancez le Monster Kube !")
 
