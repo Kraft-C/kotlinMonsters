@@ -6,7 +6,7 @@ import monde.Zone
 import monstre.EspeceMonstre
 import monstre.IndividuMonstre
 import jeu.Partie
-
+import monstre.PalierEvolution
 
 
 var joueur = Entraineur(1, "Sacha",100)
@@ -54,6 +54,27 @@ val especeFlamkip = EspeceMonstre(
     description = "Petit animal entouré de flammes, déteste le froid.",
     particularites = "Sa flamme change d'intensité selon son énergie.",
     caractères = "Impulsif, joueur, loyal"
+)
+
+val especePyrokip = EspeceMonstre(
+    id = 5,
+    nom = "pyrokip",
+    type = "Animal",
+    baseAttaque = 18,
+    baseDefense = 12,
+    baseVitesse = 15,
+    baseAttaqueSpe = 22,
+    baseDefenseSpe = 11,
+    basePv = 70,
+    modAttaque = 12.0,
+    modDefense = 8.0,
+    modVitesse = 11.0,
+    modAttaqueSpe = 12.5,
+    modDefenseSpe = 8.0,
+    modPv = 15.0,
+    description = "Pyrokip, l’évolution de Flamkip. Son feu est devenu intense et ses flammes sont capables de fondre la pierre. Fier et courageux, il protège son dresseur à tout prix.",
+    particularites = "Ses flammes changent de couleur selon son humeur : rouge vif en colère, dorées quand il est calme.",
+    caractères = "Fier, protecteur, explosif.",
 )
 
 val especeAquamy = EspeceMonstre(
@@ -170,6 +191,12 @@ val monsterKube = MonsterKube(
     chanceCapture = 50.0
 )
 
+val palierEvolutionFlamkip = PalierEvolution(
+    id = 1,
+    niveauRequis = 7,
+    evolution = especePyrokip
+)
+
 /**
  * Crée une nouvelle partie après avoir demandé son nom au joueur.
  *
@@ -199,8 +226,7 @@ fun nouvellePartie(): Partie {
  * ce monstre.
  */
 fun main() {
-
-
+    /*
     fun main() {
         route1.zoneSuivante = route2
         route2.zonePrecedente = route1
@@ -211,7 +237,7 @@ fun main() {
         partie.choixStarter()
         partie.jouer()
     }
-
+    */
 
     //val badge = Badge(1, "Badge Roche", "badge gagné lorsque le joueur bat Pierre")
 

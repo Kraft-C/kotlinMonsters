@@ -27,6 +27,7 @@ import java.io.File
  * @property description Description de l'espèce.
  * @property particularites Particularités de l'espèce.
  * @property caractères Traits de caractère associés à l'espèce.
+ * @property palierEvolution Palier d'évolution de l'espèce, ou null si l'espèce n'évolue pas.
  */
 class EspeceMonstre (var id : Int,
                      var nom: String,
@@ -45,7 +46,8 @@ class EspeceMonstre (var id : Int,
                      val modPv: Double,
                      val description: String = "",
                      val particularites: String = "",
-                     val caractères: String = "",){
+                     val caractères: String = "",
+                     var palierEvolution: PalierEvolution? = null){
 
 
 

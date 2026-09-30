@@ -82,6 +82,10 @@ class IndividuMonstre(
      */
     fun levelUp() {
         niveau += 1
+        val palier = espece.palierEvolution
+        if (palier != null && palier.peutEvoluer(this)) {
+            evoluer()
+        }
         attaque += (espece.modAttaque * potentiel).roundToInt() + (-2..2).random()
         defense += (espece.modDefense * potentiel).roundToInt() + (-2..2).random()
         vitesse += (espece.modVitesse * potentiel).roundToInt() + (-2..2).random()
@@ -156,6 +160,22 @@ class IndividuMonstre(
             val detailLine = if (i < details.size) details[i] else ""
             val paddedArt = artLine.padEnd(maxArtWidth + 4)
             println(paddedArt + detailLine)
+        }
+    }
+
+    /*****************************************************************
+     *                          SPRINT 2                             *
+     *****************************************************************/
+
+    /**
+     * Remplace l'espèce de l'individu par l'évolution définie dans son palier
+     * et affiche un message indiquant l'évolution.
+     */
+    fun evoluer() {
+        val palier = espece.palierEvolution
+        if (palier != null) {
+            this.espece = palier.evolution
+            println("$nom évolue en ${this.espece.nom} !")
         }
     }
 }
