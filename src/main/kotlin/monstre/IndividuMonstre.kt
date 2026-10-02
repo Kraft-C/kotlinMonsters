@@ -163,9 +163,11 @@ class IndividuMonstre(
         }
     }
 
+
     /*****************************************************************
      *                          SPRINT 2                             *
      *****************************************************************/
+
 
     /**
      * Remplace l'espèce de l'individu par l'évolution définie dans son palier
