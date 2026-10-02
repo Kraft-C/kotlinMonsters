@@ -6,7 +6,7 @@ import monstre.EspeceMonstre
 import monstre.IndividuMonstre
 import kotlin.random.Random
 
-class Zone(
+open class Zone(
     var id: Int,
     var nom: String,
     var expZone: Int,

@@ -36,4 +36,51 @@ class Entraineur(
         println("Dresseur : ${this.nom}")
         println("Argents: ${this.argents} ")
     }
+
+    /**
+     * Soigne tous les monstres de l'équipe.
+     *
+     * Pour chaque monstre de l'équipe, ses PV actuels sont remis à ses PV maximum.
+     */
+    fun soigneEquipe() {
+        equipeMonstre.forEach { monstre ->
+            monstre.pv = monstre.pvMax
+        }
+    }
+
+    /**
+     * Permet de choisir un monstre valide dans l'équipe.
+     * - Si un seul monstre est en état de combattre, il est choisi automatiquement.
+     * - Sinon, on affiche un menu pour choisir.
+     *
+     * @return le monstre choisi
+     */
+    fun choisirMonstre(): IndividuMonstre {
+        val monstresVivants = equipeMonstre.filter { monstre -> monstre.pv > 0 }
+
+        if (monstresVivants.size == 1) {
+            return monstresVivants.first()
+        }
+
+        println("Choisir un monstre de l'équipe")
+
+        var choixMonstre: IndividuMonstre? = null
+
+        while (choixMonstre == null) {
+            monstresVivants.forEachIndexed { index, monstre ->
+                println("${index + 1} - ${monstre.nom} | PV : ${monstre.pv} / ${monstre.pvMax}")
+            }
+
+            println("Entrez le numéro du monstre :")
+            val choixIndex = readlnOrNull()?.toIntOrNull()?.minus(1)
+
+            if (choixIndex != null && choixIndex in monstresVivants.indices) {
+                choixMonstre = monstresVivants[choixIndex]
+            } else {
+                println("Choix invalide, réessayez.")
+            }
+        }
+
+        return choixMonstre
+    }
 }

@@ -1,0 +1,3 @@
+package monde
+
+class LigneMagasin

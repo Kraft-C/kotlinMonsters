@@ -2,6 +2,7 @@ import dresseur.Entraineur
 import dresseur.joueur
 import item.Badge
 import item.MonsterKube
+import monde.Ville
 import monde.Zone
 import monstre.EspeceMonstre
 import monstre.IndividuMonstre
@@ -176,6 +177,13 @@ var route2 = Zone(
     zonePrecedante = route1
 )
 
+var racailleCity = Ville(
+    id = 4,
+    nom = "RacailleCity",
+    expZone = 25,
+    especesMonstres = mutableListOf(especeFlamkip)
+)
+
 var route3 = Zone(
     id = 3,
     nom = "Route 3",
@@ -226,6 +234,15 @@ fun nouvellePartie(): Partie {
  * ce monstre.
  */
 fun main() {
+
+
+    route2.zoneSuivante = racailleCity
+    racailleCity.zonePrecedente = route2
+
+    println("Depuis ${route2.nom}, zone suivante : ${route2.zoneSuivante?.nom}")
+    println("Depuis ${racailleCity.nom}, zone précédente : ${racailleCity.zonePrecedente.nom}")
+
+
     /*
     fun main() {
         route1.zoneSuivante = route2
